@@ -33,10 +33,8 @@ def parse(line):
     html = ""
     if line.startswith('#'):
         header_level, content = line.split(" ", 1)
-        level = len(header_level)
-        if level > 6:
-            level = 6
-        html = "<h{0:}>{1:}</h{0}>".format(level, content)
+        level = min(len(header_level), 6)
+        html = f"<h{level}>{content.strip()}</h{level}>" + "\n"
     # elif line.startswith('-'):
     #     content = line.split(" ", 1)[1]
     #     html = f"<li>{content}</li>"
