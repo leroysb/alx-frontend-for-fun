@@ -4,6 +4,7 @@
 import sys
 import os
 import re
+import hashlib
 
 
 if __name__ == '__main__':
@@ -92,4 +93,3 @@ if __name__ == '__main__':
             if paragraph:
                 html.write('</p>\n')
     exit (0)
-    
