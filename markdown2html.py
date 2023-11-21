@@ -20,32 +20,51 @@ def markdown2html():
         with open(sys.argv[1], 'r') as f:
             lines = f.readlines()
         with open(sys.argv[2], 'w', encoding="utf-8") as f:
-            for line in lines:
-                f.write(parse(line))
+                f.write(parse(lines))
     else:
         exit(0)
 
 
-def parse(line):
+def parse(lines):
     """ Reads markdown file line by line,
     and writes html equivalent
     """
     html = ""
-    if line.startswith('#'):
-        header_level, content = line.split(" ", 1)
-        level = min(len(header_level), 6)
-        html = f"<h{level}>{content.strip()}</h{level}>" + "\n"
-    # elif line.startswith('-'):
-    #     content = line.split(" ", 1)[1]
-    #     html = f"<li>{content}</li>"
-    # elif line.startswith('*'):
-    #     content = line.split(" ", 1)[1]
-    #     html = f"<li>{content}</li>"
-    # else:
-    #     if line == "\n":
-    #         html = "<br/>"
-    #     else: 
-    #         html = "<p>{}</p>".format(line)
+    in_list = False
+    list_type = None
+
+    for line in lines:
+        if line.startswith('#'):
+            header_level, content = line.split(" ", 1)
+            level = min(len(header_level), 6)
+            html += f"<h{level}>{content.strip()}</h{level}>" + "\n"
+        if line.startswith('-'):
+            if not in_list:
+                html += "<ul>\n"
+                in_list = True
+                list_type = "ul"
+            content = line.split(" ", 1)[1]
+            html += f"  <li>{content.strip()}</li>\n"
+        elif line.startswith('*'):
+            if not in_list:
+                html += "<ol>\n"
+                in_list = True
+                list_type = "ol"
+            content = line.split(" ", 1)[1]
+            html += f"  <li>{content.strip()}</li>\n"
+        elif in_list:
+            if list_type == "ul":
+                html += "</ul>\n"
+            elif list_type == "ol":
+                html += "</ol>\n"
+            in_list = False
+            list_type = None
+    if in_list:
+        if list_type == "ul":
+            html += "</ul>\n"
+        elif list_type == "ol":
+            html += "</ol>\n"
+
     return html
 
 
