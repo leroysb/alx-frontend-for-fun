@@ -37,17 +37,17 @@ def parse(line):
         if level > 6:
             level = 6
         html = "<h{0:}>{1:}</h{0}>".format(level, content)
-    elif line.startswith('-'):
-        content = line.split(" ", 1)[1]
-        html = f"<li>{content}</li>"
-    elif line.startswith('*'):
-        content = line.split(" ", 1)[1]
-        html = f"<li>{content}</li>"
-    else:
-        if line == "\n":
-            html = "<br/>"
-        else: 
-            html = "<p>{}</p>".format(line)
+    # elif line.startswith('-'):
+    #     content = line.split(" ", 1)[1]
+    #     html = f"<li>{content}</li>"
+    # elif line.startswith('*'):
+    #     content = line.split(" ", 1)[1]
+    #     html = f"<li>{content}</li>"
+    # else:
+    #     if line == "\n":
+    #         html = "<br/>"
+    #     else: 
+    #         html = "<p>{}</p>".format(line)
     return html
 
 
