@@ -57,13 +57,28 @@ def parse(lines):
                 html += "</ul>\n"
             elif list_type == "ol":
                 html += "</ol>\n"
+            else:
+                html += f"{line.strip()}\n</p>\n"
             in_list = False
             list_type = None
+        elif not line.startswith('#') and not line.startswith('-') \
+                and not line.startswith('*') and line != '\n':
+            if not in_list:
+                html += "<p>\n"
+            if line.endswith(' \n'):
+                html += f"{line.strip()}\n<br />\n"
+                in_list = True
+            else:
+                html += f"{line.strip()}\n"
+
     if in_list:
         if list_type == "ul":
             html += "</ul>\n"
         elif list_type == "ol":
             html += "</ol>\n"
+        else:
+            html += "</p>\n"
+            in_list = False
 
     return html
 
